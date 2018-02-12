@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 namespace WpfApplication1
 {
@@ -162,11 +163,14 @@ namespace WpfApplication1
             }
         }
 
-        public RelayCommand FileNameClickCommand
+        public RelayCommand<MouseButtonEventArgs> FileNameClickCommand
         {
             get
             {
-                return new RelayCommand(() => { MessageBox.Show("FileNameClickCommand"); });
+                return new RelayCommand<MouseButtonEventArgs>((e) => {
+                    if (e.ClickCount > 1)
+                        MessageBox.Show("FileNameClickCommand mouse double click!");
+                });
             }
         }
 
@@ -174,9 +178,14 @@ namespace WpfApplication1
         public MainWindowViewModel()
         {
 
-            
+            new TextBlock().MouseDown += MainWindowViewModel_MouseDown;
           
             ReadDirAndFile();
+        }
+
+        private void MainWindowViewModel_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            
         }
 
         private ObservableCollection<FileProperty> items;
